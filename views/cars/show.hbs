@@ -12,7 +12,7 @@
           >
     </span>
   <br>
-  <img src="{{car.file_path}}" class="py-3">
+  <img src="{{car_image_url}}" class="py-3">
   <h4><span class="font-bold">Mileage:</span> {{car.mileage}}</h4>
   <p>{{car.description}}</p>
   <br>
@@ -23,11 +23,13 @@
 
   {{#if is_active }}
     {{#if user}}
-    <form action="/api/cars/{{car.id}}/bids" method="POST" id="createBid">
-      <input type="hidden" name="car_id" value="{{car.id}}">
-      <input type="number" name="price" id="price">
-      <input type="submit" value="Bid">
-    </form>
+      {{#if userDidNotSubmitCar}}
+        <form action="/api/cars/{{car.id}}/bids" method="POST" id="createBid">
+          <input type="hidden" name="car_id" value="{{car.id}}">
+          <input type="number" name="price" id="price">
+          <input type="submit" value="Bid">
+        </form>
+      {{/if}}
     {{else}}
       <p class="font-bold text-xl">Please <a href="/login">login</a> to place a bid.</p>
     {{/if}}

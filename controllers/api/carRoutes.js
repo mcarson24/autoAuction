@@ -1,7 +1,6 @@
-
 const router = require('express').Router();
 const { Car, Bid, User } = require('../../models');
-const { authenticated } = require('../../helpers/middleware')
+const { authenticated, didNotSubmitCar } = require('../../helpers/middleware')
 
 
 router.put("/:id", async (req, res) => {
@@ -64,7 +63,7 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-router.post('/:id/bids', authenticated, async (req, res) => {
+router.post('/:id/bids', [authenticated, didNotSubmitCar], async (req, res) => {
   try {
     await Bid.create({
       price: req.body.price,
@@ -72,7 +71,6 @@ router.post('/:id/bids', authenticated, async (req, res) => {
       car_id: req.params.id
     });
 
-    // res.status(200).json(bid);
     res.redirect(`/cars/${req.params.id}`)
   } catch (err) {
     res.status(400).json(err);
